@@ -49,7 +49,7 @@ const LeftSection = styled.div`
 `;
 
 const NavbarWrapper = styled.nav`
-  background-color: #333;
+  background-color: #6060f4;
   /* padding: 0.3rem; */
   display: flex;
   justify-content: space-between;
