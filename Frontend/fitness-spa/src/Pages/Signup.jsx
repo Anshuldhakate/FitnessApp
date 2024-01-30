@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useHistory from React Router
-import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,43 +15,24 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-
-
-const Signup = () => {
-  const [username, setUsername] = useState('');
+function Signup() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialize useHistory
+  const navigate = useNavigate();
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('https://colorful-attire-tick.cyclic.app/users/register', {
-        username,
+      const response = await axios.post('https://myfitness-fg69.onrender.com/users/register', {
+        username: `${firstName} ${lastName}`,
         email,
         pass: password,
       });
 
-      console.log(response.data); // Handle the response as needed (e.g., show success message or redirect)
+      console.log(response.data);
 
-      // Check if signup was successful before redirecting
       if (response.data && response.data.msg === 'The new user has been registered!') {
-        // Redirect to the login page after successful signup
         navigate('/login');
       }
     } catch (error) {
@@ -63,11 +43,14 @@ const Signup = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setFirstName(data.get('firstName'));
+    setLastName(data.get('lastName'));
+    setEmail(data.get('email'));
+    setPassword(data.get('password'));
+    handleSignup();
   };
+
+  const defaultTheme = createTheme();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -143,7 +126,6 @@ const Signup = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleSignup}
             >
               Sign Up
             </Button>
@@ -156,10 +138,9 @@ const Signup = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
-};
+}
 
 export default Signup;
